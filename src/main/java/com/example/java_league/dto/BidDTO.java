@@ -3,7 +3,6 @@ package com.example.java_league.dto;
 import lombok.*;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 @Getter

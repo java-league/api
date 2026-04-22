@@ -2,8 +2,6 @@ package com.example.java_league.dto;
 
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @ToString

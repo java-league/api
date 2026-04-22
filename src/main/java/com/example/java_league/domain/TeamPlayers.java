@@ -22,11 +22,11 @@ public class TeamPlayers implements Serializable {
     private Long position;
 
     @ManyToOne
-    @JoinColumn(name= "team_id", referencedColumnName = "id")
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
 
     @ManyToOne
-    @JoinColumn(name= "player_id", referencedColumnName = "id")
+    @JoinColumn(name = "player_id", referencedColumnName = "id")
     private Player player;
 }
 

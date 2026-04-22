@@ -9,11 +9,13 @@ import com.example.java_league.mapper.TeamPlayersMapper;
 import com.example.java_league.repository.TeamPlayersRepository;
 import com.example.java_league.repository.TeamRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class TeamService {
@@ -29,7 +31,7 @@ public class TeamService {
         return teams.stream().map(teamMapper::toDto).collect(Collectors.toList());
     }
 
-    public List<TeamDTO> getAllTeamsAavailable() {
+    public List<TeamDTO> getAllTeamsAvailable() {
         List<Team> teams = teamRepository.findAllByUserIdIsNull();
         return teams.stream().map(teamMapper::toDto).collect(Collectors.toList());
     }
