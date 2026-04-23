@@ -8,7 +8,7 @@
 - [ ] Nova funcionalidade
 - [ ] Refatoração (sem mudança de comportamento)
 - [ ] Documentação
-- [ ] Outro: ___
+- [ ] Outro:___
 
 ## Checklist
 

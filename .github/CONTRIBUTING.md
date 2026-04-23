@@ -18,18 +18,18 @@ mvn test
 
 ### Estrutura de pacotes
 
-| Pacote | Responsabilidade |
-|---|---|
-| `domain` | Entidades JPA |
-| `dto` | Records de transferência de dados |
-| `request` | Records de entrada (payloads de API) |
-| `service` | Regras de negócio |
-| `controllers` | Endpoints REST e WebSocket |
-| `mapper` | Conversões MapStruct entre entidade e DTO |
-| `repository` | Acesso ao banco via Spring Data JPA |
-| `security` | Filtro JWT, configuração Spring Security |
-| `event` | Eventos de domínio (Spring ApplicationEvent) |
-| `enums` | Enumerações compartilhadas |
+| Pacote        | Responsabilidade                             |
+| ------------- | -------------------------------------------- |
+| `domain`      | Entidades JPA                                |
+| `dto`         | Records de transferência de dados            |
+| `request`     | Records de entrada (payloads de API)         |
+| `service`     | Regras de negócio                            |
+| `controllers` | Endpoints REST e WebSocket                   |
+| `mapper`      | Conversões MapStruct entre entidade e DTO    |
+| `repository`  | Acesso ao banco via Spring Data JPA          |
+| `security`    | Filtro JWT, configuração Spring Security     |
+| `event`       | Eventos de domínio (Spring ApplicationEvent) |
+| `enums`       | Enumerações compartilhadas                   |
 
 ### Convenções de código
 
