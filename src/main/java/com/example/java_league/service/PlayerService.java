@@ -55,6 +55,9 @@ public class PlayerService {
     }
 
     public BidResponseDTO bid(Long bidValue, Long teamId, Long playerId) {
+        if (teamId == null) {
+            throw new IllegalArgumentException("Team ID is required to place a bid");
+        }
         log.info("Bid recebido - playerId={}, teamId={}, bidValue={}", playerId, teamId, bidValue);
         Player player = playerRepository.findById(playerId).orElseThrow(() -> new EntityNotFoundException("Player not found"));
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new EntityNotFoundException("Team not found"));

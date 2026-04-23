@@ -53,11 +53,13 @@ public class TeamService {
         TeamDTO teamDTO = teamMapper.toDto(team);
         teamDTO.setUserId(userId);
         teamRepository.save(teamMapper.toEntity(teamDTO));
+        log.info("Time {} associado ao usuário {}", teamId, userId);
         return teamDTO;
     }
 
     public void saveTeamPlayer(Long teamId, Long playerId, Long position) {
         TeamPlayers teamPlayers = teamPlayersMapper.toEntity(new TeamPlayersDTO(playerId, teamId, position));
         teamPlayersRepository.save(teamPlayers);
+        log.info("Jogador {} adicionado ao time {} na posição {}", playerId, teamId, position);
     }
 }

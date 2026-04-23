@@ -1,7 +1,6 @@
 package com.example.java_league.controllers;
 
 import com.example.java_league.dto.TeamDTO;
-import com.example.java_league.repository.TeamRepository;
 import com.example.java_league.security.TokenService;
 import com.example.java_league.service.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamController {
 
-    private final TeamRepository teamRepository;
     private final TeamService teamService;
     private final TokenService tokenService;
 

@@ -1,5 +1,5 @@
 -- Corrige nome incorreto da constraint de FK em bid.team_id
-ALTER TABLE bid DROP CONSTRAINT fk_bid_user;
+ALTER TABLE bid DROP CONSTRAINT IF EXISTS fk_bid_user;
 ALTER TABLE bid
     ADD CONSTRAINT fk_bid_team FOREIGN KEY (team_id) REFERENCES team (id);
 
