@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +27,7 @@ public class BidController {
     private final TokenService tokenService;
 
     @PostMapping("/bid")
-    public ResponseEntity postBid(@RequestBody @Valid BidDTO body){
+    public ResponseEntity postBid(@RequestBody @Valid BidDTO body) {
         BidDTO bidDTO = bidService.save(body);
         template.convertAndSend("/topic/bid", bidDTO);
         return ResponseEntity.ok(bidDTO);
@@ -39,10 +38,5 @@ public class BidController {
         Long teamId = tokenService.getCurrentTeamId().orElse(null);
         BidResponseDTO bidRespondeDTO = playerService.bid(bidDTO.getValue(), teamId, bidDTO.getPlayerId());
         template.convertAndSend("/topic/bid", bidRespondeDTO);
-    }
-
-    @SendTo("/topic/bid")
-    public BidResponseDTO broadcastMessage(@Payload BidResponseDTO bidRespondeDTO) {
-        return bidRespondeDTO;
     }
 }

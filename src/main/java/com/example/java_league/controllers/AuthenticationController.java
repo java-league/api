@@ -1,19 +1,16 @@
 package com.example.java_league.controllers;
 
 import com.example.java_league.domain.Team;
-import com.example.java_league.dto.UserDTO;
-import com.example.java_league.mapper.UserMapper;
+import com.example.java_league.domain.User;
 import com.example.java_league.record.AuthenticationRecord;
 import com.example.java_league.record.LoginResponseRecord;
 import com.example.java_league.record.RegisterRecord;
-import com.example.java_league.domain.User;
 import com.example.java_league.repository.TeamRepository;
-import com.example.java_league.security.TokenService;
 import com.example.java_league.repository.UserRepository;
+import com.example.java_league.security.TokenService;
 import com.example.java_league.security.jwt.JWTUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,7 +38,7 @@ public class AuthenticationController {
     private final TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationRecord data){
+    public ResponseEntity login(@RequestBody @Valid AuthenticationRecord data) {
 
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(data.login(), data.password());
@@ -58,7 +55,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterRecord data) throws URISyntaxException {
-        if(this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+        if (this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.login(), encryptedPassword, data.role());

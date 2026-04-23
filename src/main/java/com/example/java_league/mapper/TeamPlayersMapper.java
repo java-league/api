@@ -1,14 +1,9 @@
 package com.example.java_league.mapper;
 
-import com.example.java_league.domain.Bid;
-import com.example.java_league.domain.Player;
 import com.example.java_league.domain.TeamPlayers;
-import com.example.java_league.dto.BidDTO;
-import com.example.java_league.dto.PlayerDTO;
 import com.example.java_league.dto.TeamPlayersDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.stream.Collectors;

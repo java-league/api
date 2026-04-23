@@ -5,15 +5,16 @@ import com.example.java_league.dto.PlayerDTO;
 import com.example.java_league.security.TokenService;
 import com.example.java_league.service.PlayerService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("api")
 @RequiredArgsConstructor
@@ -36,16 +37,11 @@ public class PlayerController {
         return ResponseEntity.ok(playerDTOS);
     }
 
-    @PatchMapping("/player/{id}/bid")
-    public ResponseEntity<Void> updateValue(@PathVariable("id") Long id, @RequestParam("bidValue") Long bidValue) {
+    @PostMapping("/player/{id}/bid")
+    public ResponseEntity<Void> updateValue(@PathVariable("id") Long id, @RequestParam("bidValue") @Positive Long bidValue) {
         Long teamId = tokenService.getCurrentTeamId().orElse(null);
         BidResponseDTO bidRespondeDTO = playerService.bid(bidValue, teamId, id);
         template.convertAndSend("/topic/bid", bidRespondeDTO);
         return ResponseEntity.ok().build();
-    }
-
-    @SendTo("/topic/bid")
-    public BidResponseDTO broadcastMessage(@Payload BidResponseDTO bidRespondeDTO) {
-        return bidRespondeDTO;
     }
 }

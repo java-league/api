@@ -23,20 +23,17 @@ public class SecurityConfigurations {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return  httpSecurity
+        return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/send").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/team").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/team").permitAll()
-                        .requestMatchers(HttpMethod.POST, "*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/player").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.POST, "/player").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/player").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/team").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/team/available").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/player").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -49,7 +46,7 @@ public class SecurityConfigurations {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

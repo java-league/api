@@ -11,12 +11,14 @@ import com.example.java_league.repository.PlayerRepository;
 import com.example.java_league.repository.TeamRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class PlayerService {
@@ -47,11 +49,16 @@ public class PlayerService {
     }
 
     public PlayerDTO getPlayerById(Long id) {
-        Player player = playerRepository.findById(id).get();
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Player not found: " + id));
         return playerMapper.toDto(player);
     }
 
     public BidResponseDTO bid(Long bidValue, Long teamId, Long playerId) {
+        if (teamId == null) {
+            throw new IllegalArgumentException("Team ID is required to place a bid");
+        }
+        log.info("Bid recebido - playerId={}, teamId={}, bidValue={}", playerId, teamId, bidValue);
         Player player = playerRepository.findById(playerId).orElseThrow(() -> new EntityNotFoundException("Player not found"));
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new EntityNotFoundException("Team not found"));
         Bid highestBid = bidRepository.findFirstByPlayerIdOrderByValueDesc(playerId);
@@ -95,6 +102,7 @@ public class PlayerService {
         bidResponseDTO.setNewPrice(player.getPrice());
         bidResponseDTO.setDate(now);
         playerRepository.save(player);
+        log.info("Lance processado: {} - playerId={}, teamId={}, novoPreco={}", bidResponseDTO.getMessage(), playerId, teamId, player.getPrice());
         return bidResponseDTO;
     }
 
