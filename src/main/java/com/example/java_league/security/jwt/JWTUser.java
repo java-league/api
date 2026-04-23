@@ -14,5 +14,4 @@ public class JWTUser extends User {
         this.setPassword(password);
         this.teamId = teamId;
     }
-
 }

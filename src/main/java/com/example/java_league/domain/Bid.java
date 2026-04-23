@@ -20,6 +20,7 @@ public class Bid implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long value;
     private ZonedDateTime date;
 
@@ -46,6 +47,3 @@ public class Bid implements Serializable {
         this.date = ZonedDateTime.now();
     }
 }
-
-
-

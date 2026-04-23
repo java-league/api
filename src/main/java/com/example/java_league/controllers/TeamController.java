@@ -18,32 +18,30 @@ public class TeamController {
     private final TokenService tokenService;
 
     @GetMapping("team/current")
-    public ResponseEntity getCurrentTeam() {
+    public ResponseEntity<TeamDTO> getCurrentTeam() {
         Long teamId = tokenService.getCurrentTeamId().orElse(null);
         TeamDTO teamDTO = teamService.getCurrentTeam(teamId);
         return ResponseEntity.ok(teamDTO);
     }
 
-
     @PostMapping("team/current")
-    public ResponseEntity saveCurrentTeam(@RequestParam("teamId") Long teamId) {
+    public ResponseEntity<TeamDTO> saveCurrentTeam(@RequestParam("teamId") Long teamId) {
         Long userId = tokenService.getCurrentUserId().orElse(null);
         TeamDTO teamDTO = teamService.saveCurrentTeam(teamId, userId);
         return ResponseEntity.ok(teamDTO);
     }
 
     @GetMapping("team")
-    public ResponseEntity getAllTeam() {
+    public ResponseEntity<List<TeamDTO>> getAllTeam() {
         List<TeamDTO> teamDTO = teamService.getAllTeams();
         return ResponseEntity.ok(teamDTO);
     }
 
     @GetMapping("team/available")
-    public ResponseEntity getAllTeamsAvailable() {
+    public ResponseEntity<List<TeamDTO>> getAllTeamsAvailable() {
         List<TeamDTO> teamDTO = teamService.getAllTeamsAvailable();
         return ResponseEntity.ok(teamDTO);
     }
-
 
     @PostMapping("/team/{playerId}/player")
     public ResponseEntity<Void> updateValue(@PathVariable("playerId") Long playerId, @RequestParam("position") Long position) {

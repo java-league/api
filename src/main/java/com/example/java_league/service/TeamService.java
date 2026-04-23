@@ -25,7 +25,6 @@ public class TeamService {
     private final TeamMapper teamMapper;
     private final TeamPlayersMapper teamPlayersMapper;
 
-
     public List<TeamDTO> getAllTeams() {
         List<Team> teams = teamRepository.findAll();
         return teams.stream().map(teamMapper::toDto).collect(Collectors.toList());
@@ -42,8 +41,11 @@ public class TeamService {
 
         TeamDTO teamDTO = teamMapper.toDto(team);
         List<TeamPlayers> teamPlayers = teamPlayersRepository.findAllByTeamId(team.getId());
-        teamDTO.setTeamPlayers(teamPlayersMapper.toDto(teamPlayers));
-        return teamDTO;
+        return new TeamDTO(
+                teamDTO.id(), teamDTO.javalis(), teamDTO.userId(), teamDTO.name(),
+                teamDTO.uniform1(), teamDTO.uniform2(), teamDTO.emblem(), teamDTO.formation(),
+                teamPlayersMapper.toDto(teamPlayers)
+        );
     }
 
     public TeamDTO saveCurrentTeam(Long teamId, Long userId) {
@@ -51,14 +53,18 @@ public class TeamService {
         if (team == null) return null;
 
         TeamDTO teamDTO = teamMapper.toDto(team);
-        teamDTO.setUserId(userId);
-        teamRepository.save(teamMapper.toEntity(teamDTO));
+        TeamDTO updatedDTO = new TeamDTO(
+                teamDTO.id(), teamDTO.javalis(), userId, teamDTO.name(),
+                teamDTO.uniform1(), teamDTO.uniform2(), teamDTO.emblem(), teamDTO.formation(),
+                teamDTO.teamPlayers()
+        );
+        teamRepository.save(teamMapper.toEntity(updatedDTO));
         log.info("Time {} associado ao usuário {}", teamId, userId);
-        return teamDTO;
+        return updatedDTO;
     }
 
     public void saveTeamPlayer(Long teamId, Long playerId, Long position) {
-        TeamPlayers teamPlayers = teamPlayersMapper.toEntity(new TeamPlayersDTO(playerId, teamId, position));
+        TeamPlayers teamPlayers = teamPlayersMapper.toEntity(TeamPlayersDTO.of(playerId, teamId, position));
         teamPlayersRepository.save(teamPlayers);
         log.info("Jogador {} adicionado ao time {} na posição {}", playerId, teamId, position);
     }
