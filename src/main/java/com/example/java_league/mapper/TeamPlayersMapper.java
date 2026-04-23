@@ -16,11 +16,13 @@ public interface TeamPlayersMapper extends EntityMapper<TeamPlayersDTO, TeamPlay
     }
 
     @Mapping(source = "player.id", target = "playerId")
+    @Mapping(source = "team.id", target = "teamId")
     @Mapping(source = "player.name", target = "name")
     @Mapping(source = "player.imageUrl", target = "imageUrl")
     TeamPlayersDTO toDto(TeamPlayers empresa);
 
     @Mapping(source = "playerId", target = "player")
     @Mapping(source = "teamId", target = "team")
+    @Mapping(target = "id", ignore = true)
     TeamPlayers toEntity(TeamPlayersDTO empresaPlanoDTO);
 }
