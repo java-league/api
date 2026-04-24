@@ -22,6 +22,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import com.example.java_league.event.BidProcessedEvent;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -76,6 +78,7 @@ class PlayerServiceTest {
         assertThat(player.getTeam()).isEqualTo(team);
         verify(bidRepository).save(any(Bid.class));
         verify(playerRepository).save(player);
+        verify(eventPublisher).publishEvent(any(BidProcessedEvent.class));
     }
 
     @Test
@@ -107,6 +110,7 @@ class PlayerServiceTest {
         verify(teamRepository).save(oldTeam);
         verify(bidRepository).save(any(Bid.class));
         verify(playerRepository).save(player);
+        verify(eventPublisher).publishEvent(any(BidProcessedEvent.class));
     }
 
     @Test
@@ -132,6 +136,7 @@ class PlayerServiceTest {
         assertThat(player.getPrice()).isEqualTo(4100L); // 4000 + 100
         verify(teamRepository).save(currentOwner);
         verify(playerRepository).save(player);
+        verify(eventPublisher).publishEvent(any(BidProcessedEvent.class));
     }
 
     @Test

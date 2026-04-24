@@ -9,7 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("api")
@@ -27,8 +30,8 @@ public class BidController {
     }
 
     @MessageMapping("/bid")
-    public void receiveMessage(@Payload BidDTO bidDTO) {
-        Long teamId = tokenService.getCurrentTeamId().orElse(null);
+    public void receiveMessage(@Payload BidDTO bidDTO, Principal principal) {
+        Long teamId = tokenService.extractTeamId((Authentication) principal);
         playerService.bid(bidDTO.value(), teamId, bidDTO.playerId());
     }
 }
