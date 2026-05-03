@@ -128,7 +128,3 @@ As migrations do Flyway são aplicadas automaticamente na inicialização, inclu
 | `JWT_SECRET` | `my-secret-key` | Segredo para assinar os tokens JWT |
 
 > Em produção, sempre defina `JWT_SECRET` com um valor seguro.
-
-## Documentação
-
-- [Lista de melhorias](doc/melhorias.md)
