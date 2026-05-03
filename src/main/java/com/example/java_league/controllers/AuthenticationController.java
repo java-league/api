@@ -2,9 +2,9 @@ package com.example.java_league.controllers;
 
 import com.example.java_league.domain.Team;
 import com.example.java_league.domain.User;
-import com.example.java_league.record.AuthenticationRecord;
-import com.example.java_league.record.LoginResponseRecord;
-import com.example.java_league.record.RegisterRecord;
+import com.example.java_league.request.AuthenticationRecord;
+import com.example.java_league.request.LoginResponseRecord;
+import com.example.java_league.request.RegisterRecord;
 import com.example.java_league.repository.TeamRepository;
 import com.example.java_league.repository.UserRepository;
 import com.example.java_league.security.TokenService;
@@ -18,10 +18,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,10 +35,9 @@ public class AuthenticationController {
     private final TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationRecord data) {
-
-
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+    public ResponseEntity<LoginResponseRecord> login(@RequestBody @Valid AuthenticationRecord data) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(data.login(), data.password());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -54,12 +50,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterRecord data) throws URISyntaxException {
+    public ResponseEntity<User> register(@RequestBody @Valid RegisterRecord data) throws URISyntaxException {
         if (this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.login(), encryptedPassword, data.role());
-
         this.userRepository.save(newUser);
 
         return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin())).body(newUser);

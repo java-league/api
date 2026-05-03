@@ -1,23 +1,27 @@
 package com.example.java_league.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.example.java_league.enums.BidType;
 
 import java.time.ZonedDateTime;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@RequiredArgsConstructor
-public class BidResponseDTO {
+public record BidResponseDTO(
+        Long newPrice,
+        Long priceLimit,
+        Long playerId,
+        ZonedDateTime date,
+        BidType message,
+        Long teamIdLowest,
+        Long teamIdHighest
+) {
+    public static BidResponseDTO firstBid(Long newPrice, Long priceLimit, Long playerId, ZonedDateTime date, Long teamIdHighest) {
+        return new BidResponseDTO(newPrice, priceLimit, playerId, date, BidType.FIRST_BID, null, teamIdHighest);
+    }
 
-    private Long newPrice;
-    private Long priceLimit;
-    private Long playerId;
-    private ZonedDateTime date;
-    private String message;
-    private Long teamIdLowest;
-    private Long teamIdHighest;
+    public static BidResponseDTO highestBid(Long newPrice, Long priceLimit, Long playerId, ZonedDateTime date, Long teamIdLowest, Long teamIdHighest) {
+        return new BidResponseDTO(newPrice, priceLimit, playerId, date, BidType.HIGHEST_BID, teamIdLowest, teamIdHighest);
+    }
+
+    public static BidResponseDTO lowestBid(Long newPrice, Long playerId, ZonedDateTime date, Long teamIdLowest, Long teamIdHighest) {
+        return new BidResponseDTO(newPrice, null, playerId, date, BidType.LOWEST_BID, teamIdLowest, teamIdHighest);
+    }
 }

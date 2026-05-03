@@ -29,6 +29,3 @@ public class TeamPlayers implements Serializable {
     @JoinColumn(name = "player_id", referencedColumnName = "id")
     private Player player;
 }
-
-
-

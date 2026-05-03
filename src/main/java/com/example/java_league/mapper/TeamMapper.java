@@ -11,6 +11,8 @@ public interface TeamMapper extends EntityMapper<TeamDTO, Team> {
 
     TeamMapper INSTANCE = Mappers.getMapper(TeamMapper.class);
 
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "teamPlayers", ignore = true)
     TeamDTO toDto(Team team);
 
     @Mapping(source = "userId", target = "user")
@@ -20,7 +22,6 @@ public interface TeamMapper extends EntityMapper<TeamDTO, Team> {
         if (teamId == null) {
             return null;
         }
-
         Team team = new Team();
         team.setId(teamId);
         return team;

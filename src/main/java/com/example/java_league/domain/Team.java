@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Team {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,12 +26,10 @@ public class Team {
     private User user;
 
     public void debitJavalis(Long value) {
-        Long javalisAtual = this.getJavalis() - value;
-        this.setJavalis(javalisAtual);
+        this.javalis = this.javalis - value;
     }
 
     public void creditJavalis(Long value) {
-        Long javalisAtual = this.getJavalis() + value;
-        this.setJavalis(javalisAtual);
+        this.javalis = this.javalis + value;
     }
 }
